@@ -124,20 +124,25 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         
         class Card {
-          constructor(src, alt, title, descr, price, parent){
+          constructor(src, alt, title, descr, price, parent, ...classes){
             this.src = src;
             this.alt = alt;
             this.title = title;
             this.descr = descr;
             this.price = price;
-            this.parent = document.querySelector(parent)
-
+            this.parent = document.querySelector(parent);
+            this.classes = classes;
           }
+
           render() {
             const element = document.createElement('div');
-
+            if(this.classes.length === 0){
+              this.class = 'menu__item';
+              element.classList.add(this.class);
+            } else{
+              this.classes.forEach(className => element.classList.add(className));
+            }
             element.innerHTML = `
-                <div class="menu__item">
                   <img src=${this.src} alt=${this.alt}>
                   <h3 class="menu__item-subtitle">${this.title}</h3>
                   <div class="menu__item-descr">${this.descr}</div>
@@ -146,7 +151,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     <div class="menu__item-cost">Цена:</div>
                     <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                   </div>
-              </div>
             `;
             this.parent.append(element);
           }
@@ -159,7 +163,9 @@ window.addEventListener('DOMContentLoaded', () => {
           'Меню "Фитнес"',
           'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
           229,
-          '.menu__field .container'
+          '.menu__field .container',
+          'menu__item',
+          'big'
         ).render();
 
         new Card(
